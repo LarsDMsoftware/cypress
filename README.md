@@ -1,6 +1,6 @@
 # To-Do API requests
 
-- PUT request
+- ~~PUT request~~
 - GET request by status
 - GET request by tags
 - POST request through form

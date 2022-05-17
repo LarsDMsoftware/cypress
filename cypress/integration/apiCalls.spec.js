@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
-describe('Pet store API Intercept test', () => {
-    it('Intercepting API response', () => {
+describe('Pet store POST API Intercept', () => {
+    it('Intercepting POST API response', () => {
         
         cy.intercept('POST','https://petstore3.swagger.io/api/v3/pet',(req) => {
             req.body.name = "Intercepted"
@@ -19,6 +19,28 @@ describe('Pet store API Intercept test', () => {
     });
 });
 
+
+describe('Pet store GET API Intercept', () => {
+    it('Intercepting GET API response', () => {
+        
+        cy.intercept('GET','https://petstore3.swagger.io/api/v3/pet/*',(req) => {
+            req.url = 'https://petstore3.swagger.io/api/v3/pet/10'
+            //headers: {url: 'https://petstore3.swagger.io/api/v3/pet/15'}
+        }).as('petPost');
+
+        cy.visit('https://petstore3.swagger.io')
+        cy.contains('Find pet by ID').click()
+        cy.contains('Try it out').click()
+        cy.get('input[placeholder = petId]').clear().type(1)
+        cy.contains('Execute').click()
+        cy.contains('Execute').click()
+15
+        cy.wait('@petPost').then (req => {
+            console.log(req)
+            //expect(req.request.body.name).to.equal("Intercepted")
+        });
+    });
+});
 
 
 
